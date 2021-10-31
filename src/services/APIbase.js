@@ -2,16 +2,16 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://localhost:3000";
 
-export async function fetchContacts() {
+export async function fetchContactsAPI() {
   const { data } = await axios.get("/contacts");
   return data;
 }
 
-export async function addContact(contact) {
+export async function addContactAPI(contact) {
   const { data } = await axios.post(`/contacts`, contact);
   return data;
 }
 
-export async function deleteContact(id) {
+export async function deleteContactAPI(id) {
   await axios.delete(`/contacts/${id}`);
 }
