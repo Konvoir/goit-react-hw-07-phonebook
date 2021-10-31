@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteContact } from '../../redux/actions';
+import { deleteContacts, fetchContacts } from '../../redux/operations';
 import { getVisibleContacts } from '../../redux/selectors';
 import s from './Contacts.module.css';
 
 export default function Contacts() {
     const contactsItem = useSelector(getVisibleContacts);
     const dispatch = useDispatch();
+    useEffect(() => dispatch(fetchContacts()), [dispatch]);
 
     if (contactsItem) {
         return (
@@ -19,7 +20,7 @@ export default function Contacts() {
                         <button
                             className={s.btn}
                             type="button"
-                            onClick={() => dispatch(deleteContact(item.id))}
+                            onClick={() => dispatch(deleteContacts(item.id))}
                         >
                             Delete
                         </button>
