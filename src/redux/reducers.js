@@ -1,34 +1,48 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import { addContact, deleteContact, filterContact } from "./actions";
+import {
+  addContactRequest,
+  addContactSuccess,
+  addContactError,
+  deleteContactRequest,
+  deleteContactSuccess,
+  deleteContactError,
+  filterContacts,
+  fetchContactsRequest,
+  fetchContactsSuccess,
+  fetchContactsError,
+} from "./actions";
 
-const contactsInitialState = {
-  items: [],
-  filter: "",
-};
+// const contactsInitialState = {
+//   items: [],
+//   filter: "",
+// };
 
-const items = createReducer(contactsInitialState.items, {
-  [addContact]: (state, { payload }) => {
-    const namesArray = state.map((item) => item.name);
-    if (namesArray.includes(payload.name)) {
-      window.alert(`${payload.name} is already in contacts`);
-      return state;
-    } else {
-      return [...state, payload];
-    }
+const items = createReducer([], {
+  [fetchContactsSuccess]: (_, { payload }) => {
+    return payload;
   },
-  [deleteContact]: (state, { payload }) => {
+  [addContactSuccess]: (state, { payload }) => {
+    return [...state, payload];
+  },
+  [deleteContactSuccess]: (state, { payload }) => {
     return state.filter(({ id }) => id !== payload);
   },
 });
 
-const filter = createReducer(contactsInitialState.filter, {
-  [filterContact]: (_, { payload }) => {
+const filter = createReducer("", {
+  [filterContacts]: (_, { payload }) => {
     return payload.toLowerCase();
   },
+});
+
+const error = createReducer(null, {
+  [addContactError]: (_, action) => window.alert(action.payload),
+  [deleteContactError]: (_, action) => action.payload,
 });
 
 export default combineReducers({
   items,
   filter,
+  error,
 });
